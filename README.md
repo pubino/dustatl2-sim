@@ -1,6 +1,6 @@
 # Dust at L2 Simulator
 
-A Java-based N-body gravitational simulator for dust particle dynamics near the Sun-Earth L2 Lagrange point. This simulation models how dust particles behave in the gravitationally perturbed environment of the outer Solar System.
+A Java-based N-body gravitational simulator by Prof. Robert Vanderbei (Princeton University) for dust particle dynamics near the Sun-Earth L2 Lagrange point. This simulation models how dust particles behave in the gravitationally perturbed environment of the outer Solar System.
 
 ## Overview
 
