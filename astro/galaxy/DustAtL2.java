@@ -2,7 +2,6 @@ package astro.galaxy;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.applet.*;
 // import java.awt.image.*;
 // import java.util.*;
 // import java.io.*;
@@ -12,7 +11,7 @@ import javax.swing.*;
 
 import myutil.*;
 
-public class DustAtL2 extends JApplet implements ActionListener, WindowListener,
+public class DustAtL2 extends JPanel implements SimApp, ActionListener, WindowListener,
 						ItemListener
 {	
 	JTextField DT;
@@ -209,13 +208,13 @@ public class DustAtL2 extends JApplet implements ActionListener, WindowListener,
 	    cr.add(tp);
 	    cr.add(bp);
 	    cr.add(Box.createRigidArea(new Dimension(50,400)));
-	    Container c = getContentPane();
+	    Container c = this;
 	    c.setLayout(new BoxLayout(c, BoxLayout.X_AXIS));
 	    c.add(cc);
 	    c.add(cr);
 
 	    /*
-	    Container c = getContentPane();
+	    Container c = this;
 	    c.setLayout(new BoxLayout(c, BoxLayout.Y_AXIS));
 	    c.add(cc);
 	    c.add(cp1);
@@ -226,6 +225,10 @@ public class DustAtL2 extends JApplet implements ActionListener, WindowListener,
 	    // add(cc);
 	    // cc.show();
 	    */
+	}
+
+	public void start() {
+		// No-op for this simulation
 	}
 
 	public void itemStateChanged(ItemEvent e) {
