@@ -54,45 +54,29 @@ DISPLAY_NAME := Dust at L2 Simulator
 BUNDLE_ID := edu.princeton.vanderbei.dustatl2-sim
 VERSION := 1.0.0
 
-# Check Java version
-JAVA_VERSION_RAW := $(shell $(JAVAC) -version 2>&1 | head -1 | sed 's/javac //' | cut -d. -f1)
-JAVA_VERSION := $(shell echo $(JAVA_VERSION_RAW) | grep -o '^[0-9]*')
+# Check for Java availability (actually test javac, not just if it exists)
+JAVA_WORKS := $(shell javac -version 2>&1 | grep -q "javac" && echo yes)
+JAVA_VERSION := $(shell javac -version 2>&1 | grep -o '[0-9]\+' | head -1)
 
 .PHONY: check-java
 check-java:
-	@if [ -z "$(JAVA_VERSION)" ]; then \
-		echo ""; \
-		echo "ERROR: Java compiler (javac) not found."; \
-		echo ""; \
-		echo "Please install Java $(MIN_JAVA_VERSION) or later:"; \
-		echo ""; \
-		echo "  macOS (Homebrew):"; \
-		echo "    brew install openjdk"; \
-		echo ""; \
-		echo "  Or download from:"; \
-		echo "    https://adoptium.net/"; \
-		echo ""; \
-		exit 1; \
-	elif [ "$(JAVA_VERSION)" -lt "$(MIN_JAVA_VERSION)" ]; then \
-		echo ""; \
-		echo "ERROR: Java $(MIN_JAVA_VERSION)+ required, but found Java $(JAVA_VERSION)."; \
-		echo ""; \
-		echo "Please upgrade your Java installation:"; \
-		echo ""; \
-		echo "  macOS (Homebrew):"; \
-		echo "    brew upgrade openjdk"; \
-		echo "    # or"; \
-		echo "    brew install openjdk"; \
-		echo ""; \
-		echo "  Or download from:"; \
-		echo "    https://adoptium.net/"; \
-		echo ""; \
-		echo "  After installing, ensure it's in your PATH:"; \
-		echo "    export JAVA_HOME=\$$(brew --prefix openjdk)"; \
-		echo "    export PATH=\$$JAVA_HOME/bin:\$$PATH"; \
-		echo ""; \
-		exit 1; \
-	fi
+ifneq ($(JAVA_WORKS),yes)
+	@echo "Error: Java compiler (javac) not found."
+ifeq ($(shell uname),Darwin)
+	@echo "Install Java on macOS with brew install openjdk and add it to your PATH."
+else
+	@echo "Please install a Java Development Kit (JDK)."
+endif
+	@exit 1
+else ifeq ($(shell test $(JAVA_VERSION) -lt $(MIN_JAVA_VERSION) && echo yes),yes)
+	@echo "Error: Java $(MIN_JAVA_VERSION)+ required, but found Java $(JAVA_VERSION)."
+ifeq ($(shell uname),Darwin)
+	@echo "Install Java on macOS with brew install openjdk and add it to your PATH."
+else
+	@echo "Please install a Java Development Kit (JDK)."
+endif
+	@exit 1
+endif
 
 # Default target
 .PHONY: all
