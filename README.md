@@ -1,5 +1,36 @@
 # Dust at L2 Simulator
 
+[Run in your browser](https://pubino.github.io/dustatl2-sim/).
+
+The browser includes the three original presets, Leapfrog and Hermite, the
+rotating body-centered view, and the original velocity-based dust color scale.
+In Leapfrog mode, Accrete hides bodies that enter a collision radius while
+continuing to integrate their motion. The menu uses a fixed integration step,
+as in the running Java app.
+
+The Python model runs in a Pyodide worker. The test suite compares coordinates,
+velocities and derivatives against the original Java engine.
+
+### Browser development
+
+```sh
+docker-compose up --build preview
+# Open http://localhost:8000
+docker-compose run --build --rm js-check
+docker-compose run --build --rm test
+```
+
+For a local test with JDK 25, uv and Node installed:
+
+```sh
+uv sync --locked --python 3.13.12
+uv run python scripts/build_site.py
+uv run playwright install --only-shell chromium
+uv run python -m unittest discover -s tests -v
+npm ci
+npm run check
+```
+
 Part of [Prof. Robert Vanderbei's Java Applications](https://pubino.github.io/vanderbei-apps#dustatl2-sim).
 
 A Java-based N-body gravitational simulator by Professor Robert Vanderbei, Princeton University, for dust particle dynamics near the Sun-Earth L2 Lagrange point. This simulation models how dust particles behave in the gravitationally perturbed environment of the outer Solar System.
